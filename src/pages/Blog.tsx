@@ -1,42 +1,99 @@
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { PublicLayout } from "@/components/site/PublicLayout";
+import { supabase } from "@/integrations/supabase/client";
+import { format } from "date-fns";
 
-const tagColors: Record<string, string> = {
-  "Notícia": "bg-pixelred text-white",
-  "Análise": "bg-navy text-white",
-  "Cultura": "bg-pixelyellow text-navy",
-  "Projeto": "bg-emerald-500 text-white",
+type PublicPost = {
+  id: string; titulo: string; resumo: string | null; conteudo: string;
+  capa_url: string | null; tags: string[]; published_at: string | null;
+  visualizacoes: number; author_id: string;
 };
 
-const posts = [
-  { id: 1, titulo: "O Início da Disciplina", data: "12/02/2026", capa: "", desc: "Conheça os primeiros passos da turma na disciplina.", tag: "Notícia" },
-  { id: 2, titulo: "Huizinga e o Lúdico", data: "20/02/2026", capa: "", desc: "Uma introdução ao pensamento de Huizinga.", tag: "Análise" },
-  { id: 3, titulo: "Cultura Gamer Brasileira", data: "01/03/2026", capa: "", desc: "Como o Brasil se relaciona com os games?", tag: "Cultura" },
-  { id: 4, titulo: "Projeto: Jogo de Tabuleiro", data: "10/03/2026", capa: "", desc: "Os alunos criaram seus próprios tabuleiros.", tag: "Projeto" },
-];
+const Blog = () => {
+  const { id } = useParams();
+  const [posts, setPosts] = useState<PublicPost[]>([]);
+  const [single, setSingle] = useState<PublicPost | null>(null);
+  const [authors, setAuthors] = useState<Record<string, string>>({});
 
-const Blog = () => (
-  <PublicLayout>
-    <h2 className="font-display text-3xl md:text-5xl text-center uppercase text-navy mb-8">Blog</h2>
+  useEffect(() => {
+    (async () => {
+      if (id) {
+        const { data } = await supabase.from("posts").select("*").eq("id", id).eq("status", "publicado").maybeSingle();
+        if (data) {
+          setSingle(data as any);
+          await supabase.from("posts").update({ visualizacoes: (data as any).visualizacoes + 1 }).eq("id", id);
+          const { data: prof } = await supabase.from("profiles").select("nome").eq("id", (data as any).author_id).maybeSingle();
+          if (prof) setAuthors(a => ({ ...a, [(data as any).author_id]: prof.nome }));
+        }
+      } else {
+        const { data } = await supabase.from("posts").select("*").eq("status", "publicado").order("published_at", { ascending: false });
+        setPosts((data as any) || []);
+        const ids = [...new Set((data || []).map((p: any) => p.author_id))];
+        if (ids.length) {
+          const { data: profs } = await supabase.from("profiles").select("id, nome").in("id", ids);
+          if (profs) setAuthors(Object.fromEntries(profs.map((p: any) => [p.id, p.nome])));
+        }
+      }
+    })();
+  }, [id]);
 
-    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-      {posts.map((p) => (
-        <article key={p.id} className="pixel-card !p-4 flex flex-col gap-3 hover:-translate-y-1 transition-transform cursor-pointer">
-          <div className="flex items-start justify-between gap-2">
-            <h3 className="font-display text-lg uppercase text-navy leading-tight flex items-center gap-2">
-              <span className="inline-block w-3 h-3 bg-pixelyellow shrink-0" style={{ clipPath: "polygon(0 0, 100% 50%, 0 100%)" }} />
-              {p.titulo}
-            </h3>
-            <span className="text-xs font-ui text-muted-foreground whitespace-nowrap">{p.data}</span>
-          </div>
-          {p.capa && <img src={p.capa} alt={p.titulo} className="w-full h-32 object-cover rounded" />}
-          <p className="font-body text-sm text-muted-foreground flex-1">{p.desc}</p>
-          <div>
-            <span className={`inline-block px-2 py-1 text-xs font-ui font-semibold rounded ${tagColors[p.tag]}`}>{p.tag}</span>
-          </div>
+  if (id && single) {
+    return (
+      <PublicLayout>
+        <article className="max-w-3xl mx-auto">
+          <Link to="/blog" className="font-ui text-sm text-navy underline">← Voltar ao Blog</Link>
+          {single.capa_url && <img src={single.capa_url} alt="" className="w-full h-64 object-cover rounded-lg my-4" />}
+          <h1 className="font-display text-3xl md:text-5xl uppercase text-navy">{single.titulo}</h1>
+          <p className="text-sm text-muted-foreground mt-2">
+            Por <strong>{authors[single.author_id] || "Aluno"}</strong> •{" "}
+            {single.published_at ? format(new Date(single.published_at), "dd/MM/yyyy") : "—"}
+          </p>
+          {single.tags.length > 0 && (
+            <div className="flex gap-2 flex-wrap mt-2">
+              {single.tags.map(t => (
+                <span key={t} className="text-xs px-2 py-0.5 bg-pixelyellow text-navy rounded font-semibold">{t}</span>
+              ))}
+            </div>
+          )}
+          {single.resumo && <p className="font-body italic text-lg mt-4 text-muted-foreground">{single.resumo}</p>}
+          <div className="font-body mt-6 whitespace-pre-wrap leading-relaxed">{single.conteudo}</div>
         </article>
-      ))}
-    </div>
-  </PublicLayout>
-);
+      </PublicLayout>
+    );
+  }
+
+  return (
+    <PublicLayout>
+      <h2 className="font-display text-3xl md:text-5xl text-center uppercase text-navy mb-8">Blog</h2>
+      {posts.length === 0 ? (
+        <p className="text-center text-muted-foreground">Ainda não há posts publicados.</p>
+      ) : (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {posts.map(p => (
+            <Link to={`/blog/${p.id}`} key={p.id} className="pixel-card !p-4 flex flex-col gap-3 hover:-translate-y-1 transition-transform">
+              {p.capa_url && <img src={p.capa_url} className="w-full h-32 object-cover rounded" alt="" />}
+              <h3 className="font-display text-lg uppercase text-navy leading-tight">{p.titulo}</h3>
+              {p.resumo && <p className="font-body text-sm text-muted-foreground flex-1 line-clamp-3">{p.resumo}</p>}
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-muted-foreground">{authors[p.author_id] || "Aluno"}</span>
+                <span className="text-muted-foreground">
+                  {p.published_at ? format(new Date(p.published_at), "dd/MM/yyyy") : ""}
+                </span>
+              </div>
+              {p.tags.length > 0 && (
+                <div className="flex gap-1 flex-wrap">
+                  {p.tags.slice(0, 3).map(t => (
+                    <span key={t} className="text-[10px] px-1.5 py-0.5 bg-pixelyellow text-navy rounded font-semibold">{t}</span>
+                  ))}
+                </div>
+              )}
+            </Link>
+          ))}
+        </div>
+      )}
+    </PublicLayout>
+  );
+};
 
 export default Blog;
