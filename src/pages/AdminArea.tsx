@@ -23,7 +23,7 @@ import { toast } from "sonner";
 
 const AdminArea = () => {
   const { isAdmin, adminPassword } = useAuth();
-  const [stats, setStats] = useState({ alunos: 0, lastSignup: "—" });
+  const [stats, setStats] = useState({ alunos: 0, lastSignup: "—", posts: 0, postsAguardando: 0, materiais: 0 });
   const [tasks, setTasks] = useState<TaskRow[]>([]);
   const [alerts, setAlerts] = useState<AlertRow[]>([]);
   const [cursor, setCursor] = useState(new Date());
@@ -35,20 +35,25 @@ const AdminArea = () => {
   useEffect(() => {
     if (!isAdmin) return;
     (async () => {
-      const { count } = await supabase.from("profiles").select("*", { count: "exact", head: true });
-      const { data: last } = await supabase.from("profiles").select("nome,created_at").order("created_at", { ascending: false }).limit(1);
-      setStats({
-        alunos: count ?? 0,
-        lastSignup: last?.[0] ? `${last[0].nome} (${format(new Date(last[0].created_at), "dd/MM/yyyy")})` : "—",
-      });
       if (adminPassword) {
         try {
-          const [t, a] = await Promise.all([
+          const [t, a, dash] = await Promise.all([
             adminAction<{ data: TaskRow[] }>(adminPassword, { type: "list_broadcast_tasks" }),
             adminAction<{ data: AlertRow[] }>(adminPassword, { type: "list_broadcast_alerts" }),
+            adminAction<{ data: { totalAlunos: number; totalPosts: number; postsAguardando: number; totalMateriais: number } }>(adminPassword, { type: "admin_dashboard" }),
+            adminAction<{ data: { id: string; nome: string; created_at: string }[] }>(adminPassword, { type: "list_alunos" }),
           ]);
           setTasks(t.data ?? []);
           setAlerts(a.data ?? []);
+          const last = (await adminAction<{ data: any[] }>(adminPassword, { type: "list_alunos" })).data
+            ?.sort((x, y) => +new Date(y.created_at) - +new Date(x.created_at))[0];
+          setStats({
+            alunos: dash.data?.totalAlunos ?? 0,
+            lastSignup: last ? `${last.nome} (${format(new Date(last.created_at), "dd/MM/yyyy")})` : "—",
+            posts: dash.data?.totalPosts ?? 0,
+            postsAguardando: dash.data?.postsAguardando ?? 0,
+            materiais: dash.data?.totalMateriais ?? 0,
+          });
         } catch { /* silencioso */ }
       }
     })();
@@ -96,8 +101,9 @@ const AdminArea = () => {
 
   const kpiCards = [
     { title: "Alunos cadastrados", value: stats.alunos, icon: Users },
-    { title: "Posts publicados", value: "—", icon: FileText },
-    { title: "Projetos publicados", value: "—", icon: FolderKanban },
+    { title: "Posts publicados", value: stats.posts, icon: FileText },
+    { title: "Aguardando moderação", value: stats.postsAguardando, icon: FileText },
+    { title: "Materiais", value: stats.materiais, icon: FolderKanban },
     { title: "Último cadastro", value: stats.lastSignup, icon: UserPlus, small: true },
   ];
 
@@ -107,7 +113,7 @@ const AdminArea = () => {
       <p className="font-body text-muted-foreground mt-1">Visão geral do site.</p>
 
       {/* KPIs */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mt-6">
         {kpiCards.map((c, i) => (
           <div key={i} className="bg-card border-2 border-navy/10 rounded-xl p-5 shadow-sm">
             <div className="flex items-center justify-between">
