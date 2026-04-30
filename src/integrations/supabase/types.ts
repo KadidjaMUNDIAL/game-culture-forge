@@ -14,6 +14,71 @@ export type Database = {
   }
   public: {
     Tables: {
+      alert_reads: {
+        Row: {
+          alert_id: string
+          id: string
+          read_at: string
+          user_id: string
+        }
+        Insert: {
+          alert_id: string
+          id?: string
+          read_at?: string
+          user_id: string
+        }
+        Update: {
+          alert_id?: string
+          id?: string
+          read_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alert_reads_alert_id_fkey"
+            columns: ["alert_id"]
+            isOneToOne: false
+            referencedRelation: "alerts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      alerts: {
+        Row: {
+          created_at: string
+          data_criacao: string
+          id: string
+          is_broadcast: boolean
+          mensagem: string
+          owner_id: string
+          tipo: Database["public"]["Enums"]["alert_type"]
+          titulo: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          data_criacao?: string
+          id?: string
+          is_broadcast?: boolean
+          mensagem: string
+          owner_id: string
+          tipo?: Database["public"]["Enums"]["alert_type"]
+          titulo: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          data_criacao?: string
+          id?: string
+          is_broadcast?: boolean
+          mensagem?: string
+          owner_id?: string
+          tipo?: Database["public"]["Enums"]["alert_type"]
+          titulo?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           classe: string
@@ -34,6 +99,77 @@ export type Database = {
           created_at?: string
           id?: string
           nome?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      task_completions: {
+        Row: {
+          completed_at: string
+          id: string
+          task_id: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          id?: string
+          task_id: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          id?: string
+          task_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "task_completions_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tasks: {
+        Row: {
+          concluida: boolean
+          created_at: string
+          data_criacao: string
+          data_limite: string | null
+          descricao: string | null
+          id: string
+          is_broadcast: boolean
+          origin: Database["public"]["Enums"]["task_origin"]
+          owner_id: string
+          titulo: string
+          updated_at: string
+        }
+        Insert: {
+          concluida?: boolean
+          created_at?: string
+          data_criacao?: string
+          data_limite?: string | null
+          descricao?: string | null
+          id?: string
+          is_broadcast?: boolean
+          origin?: Database["public"]["Enums"]["task_origin"]
+          owner_id: string
+          titulo: string
+          updated_at?: string
+        }
+        Update: {
+          concluida?: boolean
+          created_at?: string
+          data_criacao?: string
+          data_limite?: string | null
+          descricao?: string | null
+          id?: string
+          is_broadcast?: boolean
+          origin?: Database["public"]["Enums"]["task_origin"]
+          owner_id?: string
+          titulo?: string
           updated_at?: string
         }
         Relationships: []
@@ -73,7 +209,9 @@ export type Database = {
       }
     }
     Enums: {
+      alert_type: "URGENTE" | "ATENCAO" | "INFORMACAO" | "NOVO_MATERIAL"
       app_role: "admin" | "aluno"
+      task_origin: "aluno" | "professora"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -201,7 +339,9 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      alert_type: ["URGENTE", "ATENCAO", "INFORMACAO", "NOVO_MATERIAL"],
       app_role: ["admin", "aluno"],
+      task_origin: ["aluno", "professora"],
     },
   },
 } as const
