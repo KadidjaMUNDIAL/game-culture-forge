@@ -1,105 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* =====================================================
+   DESIGN SYSTEM — Jogos, Cultura e Sociedade (Pixel Art)
+   Paleta: amarelo / vermelho / azul escuro + branco/preto
+   Fontes: Pixelify Sans (títulos) | Poppins (botões/labels) | Inter (texto)
+   ===================================================== */
 
 @layer base {
   :root {
+    /* Base canvas */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 220 60% 12%;
 
+    /* Brand */
+    --navy-deep: 220 70% 15%;       /* azul escuro principal #0b2a5a */
+    --navy-mid: 218 75% 27%;        /* azul médio #123a7a */
+    --navy-soft: 215 60% 38%;       /* azul translúcido #1f4f9a */
+    --yellow: 45 100% 55%;          /* amarelo vibrante #FFC421 */
+    --yellow-soft: 48 100% 64%;     /* amarelo claro #FFD54A */
+    --yellow-deep: 40 95% 45%;      /* amarelo escuro */
+    --red: 4 78% 56%;               /* vermelho #e53935 */
+    --pixel-white: 0 0% 100%;
+    --pixel-black: 220 30% 6%;
+
+    /* Tokens shadcn (mapeados) */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
+    --card-foreground: 220 60% 12%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 220 60% 12%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 220 70% 15%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 45 100% 55%;
+    --secondary-foreground: 220 70% 15%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 20% 95%;
+    --muted-foreground: 220 20% 40%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 48 100% 64%;
+    --accent-foreground: 220 70% 15%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 4 78% 56%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 30% 88%;
+    --input: 220 30% 88%;
+    --ring: 45 100% 55%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 98%;
+    /* Gradients */
+    --grad-navy: linear-gradient(135deg, hsl(var(--navy-deep)), hsl(var(--navy-mid)));
+    --grad-navy-h: linear-gradient(90deg, hsl(var(--navy-deep)), hsl(var(--navy-mid)));
+    --grad-yellow: linear-gradient(135deg, hsl(var(--yellow-deep)), hsl(var(--yellow)));
+    --grad-hero: linear-gradient(135deg, hsl(220 70% 12%), hsl(218 75% 22%) 50%, hsl(220 70% 14%));
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    /* Shadows */
+    --shadow-pixel: 4px 4px 0 hsl(var(--pixel-black) / 0.25);
+    --shadow-pixel-yellow: 4px 4px 0 hsl(var(--yellow) / 0.5);
+    --shadow-elev: 0 8px 24px -8px hsl(var(--navy-deep) / 0.35);
+    --shadow-glow-yellow: 0 0 18px hsl(var(--yellow) / 0.55);
 
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Sidebar (área restrita) */
+    --sidebar-background: 220 70% 12%;
+    --sidebar-foreground: 0 0% 96%;
+    --sidebar-primary: 45 100% 55%;
+    --sidebar-primary-foreground: 220 70% 12%;
+    --sidebar-accent: 218 60% 22%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 218 50% 28%;
+    --sidebar-ring: 45 100% 55%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --background: 220 70% 8%;
+    --foreground: 0 0% 96%;
+    --card: 220 60% 12%;
+    --card-foreground: 0 0% 96%;
+    --popover: 220 60% 12%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 45 100% 55%;
+    --primary-foreground: 220 70% 12%;
+    --secondary: 220 60% 18%;
+    --secondary-foreground: 0 0% 96%;
+    --muted: 220 50% 18%;
+    --muted-foreground: 220 20% 70%;
+    --accent: 220 60% 22%;
+    --accent-foreground: 0 0% 96%;
+    --destructive: 4 78% 56%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 40% 22%;
+    --input: 220 40% 22%;
+    --ring: 45 100% 55%;
   }
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-
+  * { @apply border-border; }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
   }
+  h1, h2, h3, h4, h5, h6, .font-display {
+    font-family: 'Pixelify Sans', system-ui, sans-serif;
+    letter-spacing: 0.02em;
+  }
+  button, label, .font-ui {
+    font-family: 'Poppins', sans-serif;
+  }
+}
+
+@layer components {
+  /* Pixel decorations */
+  .pixel-square {
+    image-rendering: pixelated;
+    box-shadow: 0 0 0 1px hsl(var(--pixel-black) / 0.15);
+  }
+
+  /* Section title with pixel arrow */
+  .section-title {
+    font-family: 'Pixelify Sans', sans-serif;
+    @apply text-3xl md:text-4xl font-bold uppercase tracking-wide text-[hsl(var(--navy-deep))] flex items-center gap-3;
+  }
+  .section-title::before {
+    content: "";
+    display: inline-block;
+    width: 18px; height: 18px;
+    background:
+      linear-gradient(hsl(var(--yellow)), hsl(var(--yellow))) 0 50%/100% 33% no-repeat,
+      linear-gradient(hsl(var(--yellow)), hsl(var(--yellow))) 33% 0/33% 100% no-repeat;
+    clip-path: polygon(0 35%, 60% 35%, 60% 0, 100% 50%, 60% 100%, 60% 65%, 0 65%);
+    background: hsl(var(--yellow));
+  }
+
+  .pixel-card {
+    @apply bg-white rounded-xl border-[3px] border-[hsl(var(--navy-deep))] p-6 md:p-8;
+    box-shadow: var(--shadow-pixel);
+  }
+
+  /* Hero header background with pixel decorations */
+  .hero-header {
+    background: var(--grad-hero);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-header::before,
+  .hero-header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(hsl(var(--yellow) / 0.9) 2px, transparent 3px),
+      radial-gradient(hsl(var(--pixel-white) / 0.7) 1.5px, transparent 2px),
+      radial-gradient(hsl(var(--navy-soft) / 0.7) 2px, transparent 3px);
+    background-size: 90px 90px, 60px 60px, 120px 120px;
+    background-position: 10px 20px, 40px 50px, 70px 10px;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .hero-header::after {
+    background-image:
+      linear-gradient(transparent 60%, hsl(var(--pixel-black) / 0.35));
+    background-size: 100% 100%;
+    opacity: 1;
+  }
+
+  /* Navbar pill */
+  .nav-pill {
+    background: var(--grad-navy-h);
+    box-shadow: var(--shadow-elev), inset 0 1px 0 hsl(var(--pixel-white) / 0.08);
+    position: relative;
+  }
+  .nav-pill::before, .nav-pill::after {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0; width: 90px;
+    background-image:
+      radial-gradient(hsl(var(--yellow)) 2px, transparent 3px),
+      radial-gradient(hsl(var(--pixel-white)) 1.5px, transparent 2px),
+      radial-gradient(hsl(var(--navy-soft)) 2px, transparent 3px);
+    background-size: 25px 25px, 18px 18px, 30px 30px;
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  .nav-pill::before { left: 0; border-radius: 9999px 0 0 9999px; }
+  .nav-pill::after { right: 0; border-radius: 0 9999px 9999px 0; }
+
+  .nav-btn {
+    font-family: 'Poppins', sans-serif;
+    @apply uppercase tracking-wide text-xs md:text-sm font-semibold px-4 md:px-5 py-2 rounded-lg transition-all;
+    color: hsl(var(--pixel-white));
+    background: hsl(var(--navy-soft) / 0.55);
+  }
+  .nav-btn:hover { background: hsl(var(--navy-soft) / 0.85); }
+  .nav-btn-active {
+    background: hsl(var(--yellow));
+    color: hsl(var(--navy-deep));
+    box-shadow: inset 0 2px 0 hsl(var(--yellow-deep)), 0 0 0 2px hsl(var(--yellow) / 0.4);
+  }
+  .nav-btn-restrict {
+    background: hsl(var(--red));
+    color: hsl(var(--pixel-white));
+  }
+  .nav-btn-restrict:hover { background: hsl(var(--red) / 0.85); }
+
+  /* Pixel button (CTA) */
+  .btn-pixel-yellow {
+    @apply uppercase tracking-wide font-semibold rounded-lg px-5 py-2.5;
+    font-family: 'Poppins', sans-serif;
+    background: hsl(var(--yellow));
+    color: hsl(var(--navy-deep));
+    box-shadow: var(--shadow-pixel);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-pixel-yellow:hover { box-shadow: var(--shadow-glow-yellow); transform: translate(-1px,-1px); }
 }
