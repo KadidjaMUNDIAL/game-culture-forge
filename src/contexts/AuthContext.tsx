@@ -13,7 +13,8 @@ interface AuthCtx {
   signIn: (nome: string, senha: string) => Promise<{ error?: string }>;
   signUp: (nome: string, classe: string, senha: string) => Promise<{ error?: string }>;
   signOut: () => Promise<void>;
-  setAdmin: (v: boolean) => void;
+  setAdmin: (v: boolean, password?: string) => void;
+  adminPassword: string | null;
 }
 
 const Ctx = createContext<AuthCtx | undefined>(undefined);
@@ -27,6 +28,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isAdmin, setIsAdmin] = useState<boolean>(() => sessionStorage.getItem("jcs_admin") === "1");
+  const [adminPassword, setAdminPassword] = useState<string | null>(() => sessionStorage.getItem("jcs_admin_pwd"));
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -85,17 +87,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signOut = async () => {
     await supabase.auth.signOut();
     sessionStorage.removeItem("jcs_admin");
+    sessionStorage.removeItem("jcs_admin_pwd");
     setIsAdmin(false);
+    setAdminPassword(null);
   };
 
-  const setAdmin = (v: boolean) => {
+  const setAdmin = (v: boolean, password?: string) => {
     setIsAdmin(v);
-    if (v) sessionStorage.setItem("jcs_admin", "1");
-    else sessionStorage.removeItem("jcs_admin");
+    if (v) {
+      sessionStorage.setItem("jcs_admin", "1");
+      if (password) {
+        sessionStorage.setItem("jcs_admin_pwd", password);
+        setAdminPassword(password);
+      }
+    } else {
+      sessionStorage.removeItem("jcs_admin");
+      sessionStorage.removeItem("jcs_admin_pwd");
+      setAdminPassword(null);
+    }
   };
 
   return (
-    <Ctx.Provider value={{ session, user, profile, isAdmin, loading, signIn, signUp, signOut, setAdmin }}>
+    <Ctx.Provider value={{ session, user, profile, isAdmin, adminPassword, loading, signIn, signUp, signOut, setAdmin }}>
       {children}
     </Ctx.Provider>
   );
