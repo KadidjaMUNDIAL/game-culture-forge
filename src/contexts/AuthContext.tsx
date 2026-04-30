@@ -87,17 +87,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signOut = async () => {
     await supabase.auth.signOut();
     sessionStorage.removeItem("jcs_admin");
+    sessionStorage.removeItem("jcs_admin_pwd");
     setIsAdmin(false);
+    setAdminPassword(null);
   };
 
-  const setAdmin = (v: boolean) => {
+  const setAdmin = (v: boolean, password?: string) => {
     setIsAdmin(v);
-    if (v) sessionStorage.setItem("jcs_admin", "1");
-    else sessionStorage.removeItem("jcs_admin");
+    if (v) {
+      sessionStorage.setItem("jcs_admin", "1");
+      if (password) {
+        sessionStorage.setItem("jcs_admin_pwd", password);
+        setAdminPassword(password);
+      }
+    } else {
+      sessionStorage.removeItem("jcs_admin");
+      sessionStorage.removeItem("jcs_admin_pwd");
+      setAdminPassword(null);
+    }
   };
 
   return (
-    <Ctx.Provider value={{ session, user, profile, isAdmin, loading, signIn, signUp, signOut, setAdmin }}>
+    <Ctx.Provider value={{ session, user, profile, isAdmin, adminPassword, loading, signIn, signUp, signOut, setAdmin }}>
       {children}
     </Ctx.Provider>
   );
