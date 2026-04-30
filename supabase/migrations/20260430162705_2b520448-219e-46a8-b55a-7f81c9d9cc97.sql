@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.add_xp(UUID, INTEGER) FROM PUBLIC, anon, authenticated;
