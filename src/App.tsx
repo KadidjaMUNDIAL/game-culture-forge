@@ -16,6 +16,9 @@ import MateriaisExtras from "./pages/aluno/MateriaisExtras";
 import BlogAluno from "./pages/aluno/BlogAluno";
 import AlunoGuard from "./pages/aluno/AlunoGuard";
 import AdminArea from "./pages/AdminArea";
+import AdminGuard from "./pages/admin/AdminGuard";
+import AdminAgendaPage from "./pages/admin/AdminAgendaPage";
+import AdminPlaceholder from "./pages/admin/AdminPlaceholder";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -41,6 +44,14 @@ const App = () => (
               <Route path="/aluno/blog" element={<BlogAluno />} />
             </Route>
             <Route path="/admin" element={<AdminArea />} />
+            <Route element={<AdminGuard />}>
+              <Route path="/admin/agenda" element={<AdminAgendaPage />} />
+              <Route path="/admin/editor" element={<AdminPlaceholder title="Editar Visão Pública" />} />
+              <Route path="/admin/alunos" element={<AdminPlaceholder title="Gerenciar Alunos" />} />
+              <Route path="/admin/apostila" element={<AdminPlaceholder title="Apostila" />} />
+              <Route path="/admin/projetos" element={<AdminPlaceholder title="Projetos" />} />
+              <Route path="/admin/blog" element={<AdminPlaceholder title="Blog" />} />
+            </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
