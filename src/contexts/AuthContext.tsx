@@ -13,7 +13,8 @@ interface AuthCtx {
   signIn: (nome: string, senha: string) => Promise<{ error?: string }>;
   signUp: (nome: string, classe: string, senha: string) => Promise<{ error?: string }>;
   signOut: () => Promise<void>;
-  setAdmin: (v: boolean) => void;
+  setAdmin: (v: boolean, password?: string) => void;
+  adminPassword: string | null;
 }
 
 const Ctx = createContext<AuthCtx | undefined>(undefined);
@@ -27,6 +28,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isAdmin, setIsAdmin] = useState<boolean>(() => sessionStorage.getItem("jcs_admin") === "1");
+  const [adminPassword, setAdminPassword] = useState<string | null>(() => sessionStorage.getItem("jcs_admin_pwd"));
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

@@ -29,7 +29,7 @@ export const AdminPasswordModal = ({ open, onOpenChange, onSuccess }: Props) => 
       });
       if (error) throw error;
       if (data?.valid) {
-        setAdmin(true);
+        setAdmin(true, senha);
         toast.success("Acesso liberado.");
         setSenha("");
         onOpenChange(false);
