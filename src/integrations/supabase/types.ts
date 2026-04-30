@@ -79,27 +79,197 @@ export type Database = {
         }
         Relationships: []
       }
+      conquistas: {
+        Row: {
+          codigo: string
+          created_at: string
+          descricao: string
+          icone: string
+          id: string
+          titulo: string
+          xp_recompensa: number
+        }
+        Insert: {
+          codigo: string
+          created_at?: string
+          descricao: string
+          icone?: string
+          id?: string
+          titulo: string
+          xp_recompensa?: number
+        }
+        Update: {
+          codigo?: string
+          created_at?: string
+          descricao?: string
+          icone?: string
+          id?: string
+          titulo?: string
+          xp_recompensa?: number
+        }
+        Relationships: []
+      }
+      materiais: {
+        Row: {
+          arquivo_path: string | null
+          arquivo_url: string | null
+          capa_url: string | null
+          created_at: string
+          created_by: string
+          descricao: string | null
+          id: string
+          ordem: number
+          tipo: Database["public"]["Enums"]["material_tipo"]
+          titulo: string
+          trimestre: number | null
+          updated_at: string
+          visivel_publico: boolean
+        }
+        Insert: {
+          arquivo_path?: string | null
+          arquivo_url?: string | null
+          capa_url?: string | null
+          created_at?: string
+          created_by: string
+          descricao?: string | null
+          id?: string
+          ordem?: number
+          tipo: Database["public"]["Enums"]["material_tipo"]
+          titulo: string
+          trimestre?: number | null
+          updated_at?: string
+          visivel_publico?: boolean
+        }
+        Update: {
+          arquivo_path?: string | null
+          arquivo_url?: string | null
+          capa_url?: string | null
+          created_at?: string
+          created_by?: string
+          descricao?: string | null
+          id?: string
+          ordem?: number
+          tipo?: Database["public"]["Enums"]["material_tipo"]
+          titulo?: string
+          trimestre?: number | null
+          updated_at?: string
+          visivel_publico?: boolean
+        }
+        Relationships: []
+      }
+      post_comments: {
+        Row: {
+          author_id: string
+          conteudo: string
+          created_at: string
+          id: string
+          post_id: string
+        }
+        Insert: {
+          author_id: string
+          conteudo: string
+          created_at?: string
+          id?: string
+          post_id: string
+        }
+        Update: {
+          author_id?: string
+          conteudo?: string
+          created_at?: string
+          id?: string
+          post_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          author_id: string
+          capa_url: string | null
+          conteudo: string
+          created_at: string
+          id: string
+          justificativa_reprovacao: string | null
+          published_at: string | null
+          resumo: string | null
+          status: Database["public"]["Enums"]["post_status"]
+          tags: string[]
+          titulo: string
+          updated_at: string
+          visualizacoes: number
+        }
+        Insert: {
+          author_id: string
+          capa_url?: string | null
+          conteudo?: string
+          created_at?: string
+          id?: string
+          justificativa_reprovacao?: string | null
+          published_at?: string | null
+          resumo?: string | null
+          status?: Database["public"]["Enums"]["post_status"]
+          tags?: string[]
+          titulo: string
+          updated_at?: string
+          visualizacoes?: number
+        }
+        Update: {
+          author_id?: string
+          capa_url?: string | null
+          conteudo?: string
+          created_at?: string
+          id?: string
+          justificativa_reprovacao?: string | null
+          published_at?: string | null
+          resumo?: string | null
+          status?: Database["public"]["Enums"]["post_status"]
+          tags?: string[]
+          titulo?: string
+          updated_at?: string
+          visualizacoes?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
+          avatar_url: string | null
+          bio: string | null
           classe: string
           created_at: string
           id: string
+          nivel: number
           nome: string
           updated_at: string
+          xp: number
         }
         Insert: {
+          avatar_url?: string | null
+          bio?: string | null
           classe?: string
           created_at?: string
           id: string
+          nivel?: number
           nome: string
           updated_at?: string
+          xp?: number
         }
         Update: {
+          avatar_url?: string | null
+          bio?: string | null
           classe?: string
           created_at?: string
           id?: string
+          nivel?: number
           nome?: string
           updated_at?: string
+          xp?: number
         }
         Relationships: []
       }
@@ -174,6 +344,35 @@ export type Database = {
         }
         Relationships: []
       }
+      user_conquistas: {
+        Row: {
+          conquista_id: string
+          id: string
+          unlocked_at: string
+          user_id: string
+        }
+        Insert: {
+          conquista_id: string
+          id?: string
+          unlocked_at?: string
+          user_id: string
+        }
+        Update: {
+          conquista_id?: string
+          id?: string
+          unlocked_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_conquistas_conquista_id_fkey"
+            columns: ["conquista_id"]
+            isOneToOne: false
+            referencedRelation: "conquistas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -200,6 +399,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      add_xp: {
+        Args: { _amount: number; _user_id: string }
+        Returns: undefined
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -211,6 +414,8 @@ export type Database = {
     Enums: {
       alert_type: "URGENTE" | "ATENCAO" | "INFORMACAO" | "NOVO_MATERIAL"
       app_role: "admin" | "aluno"
+      material_tipo: "apostila" | "material_extra" | "projeto"
+      post_status: "rascunho" | "aguardando" | "publicado" | "reprovado"
       task_origin: "aluno" | "professora"
     }
     CompositeTypes: {
@@ -341,6 +546,8 @@ export const Constants = {
     Enums: {
       alert_type: ["URGENTE", "ATENCAO", "INFORMACAO", "NOVO_MATERIAL"],
       app_role: ["admin", "aluno"],
+      material_tipo: ["apostila", "material_extra", "projeto"],
+      post_status: ["rascunho", "aguardando", "publicado", "reprovado"],
       task_origin: ["aluno", "professora"],
     },
   },
