@@ -17,5 +17,4 @@ export async function adminAction<T = any>(password: string, body: unknown): Pro
   return json as T;
 }
 
-// Garante que tem sessão; se não, retorna client sem auth (broadcast pode ser lido por authenticated apenas)
 export { supabase };

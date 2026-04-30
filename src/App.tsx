@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Disciplina from "./pages/Disciplina";
 import Trimestre from "./pages/Trimestre";
 import Blog from "./pages/Blog";
+import Projetos from "./pages/Projetos";
 import AlunoArea from "./pages/AlunoArea";
 import MeuPerfil from "./pages/aluno/MeuPerfil";
 import Agenda from "./pages/aluno/Agenda";
@@ -18,7 +19,9 @@ import AlunoGuard from "./pages/aluno/AlunoGuard";
 import AdminArea from "./pages/AdminArea";
 import AdminGuard from "./pages/admin/AdminGuard";
 import AdminAgendaPage from "./pages/admin/AdminAgendaPage";
-import AdminPlaceholder from "./pages/admin/AdminPlaceholder";
+import AdminBlogPage from "./pages/admin/AdminBlogPage";
+import AdminAlunosPage from "./pages/admin/AdminAlunosPage";
+import AdminMateriaisPage from "./pages/admin/AdminMateriaisPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,7 +37,9 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/disciplina" element={<Disciplina />} />
             <Route path="/trimestres/:num" element={<Trimestre />} />
+            <Route path="/projetos" element={<Projetos />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:id" element={<Blog />} />
             <Route path="/aluno" element={<AlunoArea />} />
             <Route element={<AlunoGuard />}>
               <Route path="/aluno/perfil" element={<MeuPerfil />} />
@@ -46,11 +51,11 @@ const App = () => (
             <Route path="/admin" element={<AdminArea />} />
             <Route element={<AdminGuard />}>
               <Route path="/admin/agenda" element={<AdminAgendaPage />} />
-              <Route path="/admin/editor" element={<AdminPlaceholder title="Editar Visão Pública" />} />
-              <Route path="/admin/alunos" element={<AdminPlaceholder title="Gerenciar Alunos" />} />
-              <Route path="/admin/apostila" element={<AdminPlaceholder title="Apostila" />} />
-              <Route path="/admin/projetos" element={<AdminPlaceholder title="Projetos" />} />
-              <Route path="/admin/blog" element={<AdminPlaceholder title="Blog" />} />
+              <Route path="/admin/alunos" element={<AdminAlunosPage />} />
+              <Route path="/admin/apostila" element={<AdminMateriaisPage tipoFixo="apostila" />} />
+              <Route path="/admin/materiais" element={<AdminMateriaisPage tipoFixo="material_extra" />} />
+              <Route path="/admin/projetos" element={<AdminMateriaisPage tipoFixo="projeto" />} />
+              <Route path="/admin/blog" element={<AdminBlogPage />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
