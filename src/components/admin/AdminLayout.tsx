@@ -1,14 +1,14 @@
 import { ReactNode } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { Home, Edit, Users, Calendar, BookOpen, FolderKanban, MessageSquare, LogOut } from "lucide-react";
+import { Home, Users, Calendar, BookOpen, FolderKanban, MessageSquare, FileText, LogOut } from "lucide-react";
 
 const items = [
   { icon: Home, label: "INÍCIO", to: "/admin" },
-  { icon: Edit, label: "EDITAR VISÃO PÚBLICA", to: "/admin/editor" },
   { icon: Users, label: "GERENCIAR ALUNOS", to: "/admin/alunos" },
   { icon: Calendar, label: "AGENDA", to: "/admin/agenda" },
   { icon: BookOpen, label: "APOSTILA", to: "/admin/apostila" },
+  { icon: FileText, label: "MATERIAIS EXTRAS", to: "/admin/materiais" },
   { icon: FolderKanban, label: "PROJETOS", to: "/admin/projetos" },
   { icon: MessageSquare, label: "BLOG", to: "/admin/blog" },
 ];
