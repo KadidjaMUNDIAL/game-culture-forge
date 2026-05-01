@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { Home, User, Calendar, BookOpen, FileText, MessageSquare, LogOut } from "lucide-react";
+import { Home, User, Calendar, BookOpen, FileText, MessageSquare, LogOut, Trophy } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useRealtimeNotifier } from "@/hooks/useRealtimeNotifier";
 
 const items = [
   { icon: Home, label: "INÍCIO", to: "/aluno" },
@@ -10,11 +11,13 @@ const items = [
   { icon: BookOpen, label: "APOSTILA", to: "/aluno/apostila" },
   { icon: FileText, label: "MATERIAIS EXTRAS", to: "/aluno/materiais" },
   { icon: MessageSquare, label: "BLOG", to: "/aluno/blog" },
+  { icon: Trophy, label: "RANKING", to: "/aluno/ranking" },
 ];
 
 export const AlunoLayout = ({ children }: { children: ReactNode }) => {
   const { profile, signOut } = useAuth();
   const { pathname } = useLocation();
+  useRealtimeNotifier();
 
   const isActive = (to: string) =>
     to === "/aluno" ? pathname === "/aluno" || pathname === "/aluno/perfil" : pathname.startsWith(to);

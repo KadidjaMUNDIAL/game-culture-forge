@@ -15,6 +15,7 @@ import Agenda from "./pages/aluno/Agenda";
 import Apostila from "./pages/aluno/Apostila";
 import MateriaisExtras from "./pages/aluno/MateriaisExtras";
 import BlogAluno from "./pages/aluno/BlogAluno";
+import Ranking from "./pages/aluno/Ranking";
 import AlunoGuard from "./pages/aluno/AlunoGuard";
 import AdminArea from "./pages/AdminArea";
 import AdminGuard from "./pages/admin/AdminGuard";
@@ -47,6 +48,7 @@ const App = () => (
               <Route path="/aluno/apostila" element={<Apostila />} />
               <Route path="/aluno/materiais" element={<MateriaisExtras />} />
               <Route path="/aluno/blog" element={<BlogAluno />} />
+              <Route path="/aluno/ranking" element={<Ranking />} />
             </Route>
             <Route path="/admin" element={<AdminArea />} />
             <Route element={<AdminGuard />}>

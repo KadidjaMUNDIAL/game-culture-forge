@@ -3,6 +3,9 @@ import { Link, useParams } from "react-router-dom";
 import { PublicLayout } from "@/components/site/PublicLayout";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
+import { RichRenderer } from "@/components/aluno/RichEditor";
+import { Comentarios } from "@/components/blog/Comentarios";
+import { Eye } from "lucide-react";
 
 type PublicPost = {
   id: string; titulo: string; resumo: string | null; conteudo: string;
@@ -43,21 +46,25 @@ const Blog = () => {
       <PublicLayout>
         <article className="max-w-3xl mx-auto">
           <Link to="/blog" className="font-ui text-sm text-navy underline">← Voltar ao Blog</Link>
-          {single.capa_url && <img src={single.capa_url} alt="" className="w-full h-64 object-cover rounded-lg my-4" />}
+          {single.capa_url && <img src={single.capa_url} alt="" className="w-full h-64 object-cover rounded-lg my-4 border-2 border-pixelyellow/40" />}
           <h1 className="font-display text-3xl md:text-5xl uppercase text-navy">{single.titulo}</h1>
-          <p className="text-sm text-muted-foreground mt-2">
-            Por <strong>{authors[single.author_id] || "Aluno"}</strong> •{" "}
-            {single.published_at ? format(new Date(single.published_at), "dd/MM/yyyy") : "—"}
+          <p className="text-sm text-muted-foreground mt-2 flex items-center gap-3">
+            <span>Por <strong>{authors[single.author_id] || "Aluno"}</strong></span>
+            <span>•</span>
+            <span>{single.published_at ? format(new Date(single.published_at), "dd/MM/yyyy") : "—"}</span>
+            <span>•</span>
+            <span className="flex items-center gap-1"><Eye className="w-3 h-3" />{single.visualizacoes}</span>
           </p>
           {single.tags.length > 0 && (
             <div className="flex gap-2 flex-wrap mt-2">
               {single.tags.map(t => (
-                <span key={t} className="text-xs px-2 py-0.5 bg-pixelyellow text-navy rounded font-semibold">{t}</span>
+                <span key={t} className="text-xs px-2 py-0.5 bg-pixelyellow text-navy rounded font-semibold">#{t}</span>
               ))}
             </div>
           )}
           {single.resumo && <p className="font-body italic text-lg mt-4 text-muted-foreground">{single.resumo}</p>}
-          <div className="font-body mt-6 whitespace-pre-wrap leading-relaxed">{single.conteudo}</div>
+          <div className="mt-6"><RichRenderer source={single.conteudo} /></div>
+          <Comentarios postId={single.id} />
         </article>
       </PublicLayout>
     );
@@ -77,14 +84,14 @@ const Blog = () => {
               {p.resumo && <p className="font-body text-sm text-muted-foreground flex-1 line-clamp-3">{p.resumo}</p>}
               <div className="flex items-center justify-between text-xs">
                 <span className="text-muted-foreground">{authors[p.author_id] || "Aluno"}</span>
-                <span className="text-muted-foreground">
-                  {p.published_at ? format(new Date(p.published_at), "dd/MM/yyyy") : ""}
+                <span className="text-muted-foreground flex items-center gap-1">
+                  <Eye className="w-3 h-3" />{p.visualizacoes}
                 </span>
               </div>
               {p.tags.length > 0 && (
                 <div className="flex gap-1 flex-wrap">
                   {p.tags.slice(0, 3).map(t => (
-                    <span key={t} className="text-[10px] px-1.5 py-0.5 bg-pixelyellow text-navy rounded font-semibold">{t}</span>
+                    <span key={t} className="text-[10px] px-1.5 py-0.5 bg-pixelyellow text-navy rounded font-semibold">#{t}</span>
                   ))}
                 </div>
               )}
