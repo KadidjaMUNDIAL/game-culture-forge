@@ -4,12 +4,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, Send, Eye } from "lucide-react";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
+import { RichEditor } from "@/components/aluno/RichEditor";
+import { ImageUpload } from "@/components/aluno/ImageUpload";
 
 type PostStatus = "rascunho" | "aguardando" | "publicado" | "reprovado";
 type Post = {
@@ -152,19 +153,18 @@ const BlogAluno = () => {
             </div>
             <div>
               <label className="text-sm font-semibold">Resumo</label>
-              <Input value={form.resumo} onChange={e => setForm({ ...form, resumo: e.target.value })} />
+              <Input value={form.resumo} onChange={e => setForm({ ...form, resumo: e.target.value })} placeholder="Frase curta que aparece nos cards" />
             </div>
-            <div>
-              <label className="text-sm font-semibold">URL da Capa (opcional)</label>
-              <Input value={form.capa_url} onChange={e => setForm({ ...form, capa_url: e.target.value })} placeholder="https://..." />
-            </div>
+            {user && (
+              <ImageUpload bucket="post-imagens" pathPrefix={user.id} value={form.capa_url} onChange={v => setForm({ ...form, capa_url: v })} label="Capa (opcional)" />
+            )}
             <div>
               <label className="text-sm font-semibold">Tags (separadas por vírgula)</label>
               <Input value={form.tags} onChange={e => setForm({ ...form, tags: e.target.value })} placeholder="cultura, jogos" />
             </div>
             <div>
               <label className="text-sm font-semibold">Conteúdo *</label>
-              <Textarea rows={10} value={form.conteudo} onChange={e => setForm({ ...form, conteudo: e.target.value })} />
+              <RichEditor value={form.conteudo} onChange={v => setForm({ ...form, conteudo: v })} />
             </div>
             <div className="flex justify-end gap-2 pt-2">
               <Button variant="outline" onClick={() => save(false)}>Salvar Rascunho</Button>
