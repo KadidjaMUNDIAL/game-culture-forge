@@ -9,6 +9,7 @@ import { Navigate, Link } from "react-router-dom";
 import { toast } from "sonner";
 import { Check, RotateCw, X, Trash2, Eye } from "lucide-react";
 import { format } from "date-fns";
+import { RichRenderer } from "@/components/aluno/RichEditor";
 
 type Post = {
   id: string; titulo: string; resumo: string | null; conteudo: string;
@@ -163,7 +164,7 @@ const AdminBlogPage = () => {
             <DialogTitle>{viewing?.titulo}</DialogTitle>
           </DialogHeader>
           {viewing?.resumo && <p className="text-sm italic text-muted-foreground">{viewing.resumo}</p>}
-          <div className="prose prose-sm max-w-none whitespace-pre-wrap">{viewing?.conteudo}</div>
+          {viewing && <RichRenderer source={viewing.conteudo} />}
         </DialogContent>
       </Dialog>
     </AdminLayout>

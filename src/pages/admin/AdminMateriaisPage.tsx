@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Plus, Pencil, Trash2, FileText, Eye, EyeOff, Upload } from "lucide-react";
+import { ImageUpload } from "@/components/aluno/ImageUpload";
 
 type MaterialTipo = "apostila" | "material_extra" | "projeto";
 type Material = {
@@ -189,10 +190,7 @@ const AdminMateriaisPage = ({ tipoFixo }: { tipoFixo?: MaterialTipo }) => {
               </div>
               {form.arquivo_url && <a href={form.arquivo_url} target="_blank" className="text-xs underline text-blue-600">Ver arquivo atual</a>}
             </div>
-            <div>
-              <label className="text-sm font-semibold">URL da Capa (opcional)</label>
-              <Input value={form.capa_url} onChange={e => setForm({ ...form, capa_url: e.target.value })} />
-            </div>
+            <ImageUpload bucket="materiais" pathPrefix={`capas/${form.tipo}`} value={form.capa_url} onChange={v => setForm({ ...form, capa_url: v })} label="Capa (opcional)" />
             <div className="flex items-center gap-2">
               <input type="checkbox" id="vis" checked={form.visivel_publico} onChange={e => setForm({ ...form, visivel_publico: e.target.checked })} />
               <label htmlFor="vis" className="text-sm">Visível na página pública</label>
