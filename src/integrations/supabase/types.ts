@@ -396,7 +396,33 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      ranking_alunos: {
+        Row: {
+          avatar_url: string | null
+          classe: string | null
+          id: string | null
+          nivel: number | null
+          nome: string | null
+          xp: number | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          classe?: string | null
+          id?: string | null
+          nivel?: number | null
+          nome?: string | null
+          xp?: number | null
+        }
+        Update: {
+          avatar_url?: string | null
+          classe?: string | null
+          id?: string | null
+          nivel?: number | null
+          nome?: string | null
+          xp?: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       add_xp: {
@@ -409,6 +435,10 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      unlock_conquista: {
+        Args: { _codigo: string; _user_id: string }
+        Returns: undefined
       }
     }
     Enums: {
