@@ -43,7 +43,7 @@ const MeuPerfil = () => {
   const save = async () => {
     if (!user) return;
     const { error } = await supabase.from("profiles").update({
-      nome: form.nome.trim(), classe: form.classe.trim(), bio: form.bio.trim() || null,
+      nome: form.nome.trim(), bio: form.bio.trim() || null,
     }).eq("id", user.id);
     if (error) return toast.error(error.message);
     toast.success("Perfil atualizado!");
@@ -112,7 +112,7 @@ const MeuPerfil = () => {
         {editing ? (
           <div className="space-y-3">
             <div><label className="text-sm">Nome</label><Input value={form.nome} onChange={e => setForm({ ...form, nome: e.target.value })} /></div>
-            <div><label className="text-sm">Classe</label><Input value={form.classe} onChange={e => setForm({ ...form, classe: e.target.value })} /></div>
+            <div><label className="text-sm">Classe</label><Input value={form.classe} disabled className="opacity-70 cursor-not-allowed" /><p className="text-[10px] text-white/50 mt-1">A classe não pode ser alterada pelo aluno.</p></div>
             <div><label className="text-sm">Bio</label><Textarea value={form.bio} onChange={e => setForm({ ...form, bio: e.target.value })} rows={3} /></div>
             <Button onClick={save} className="bg-pixelyellow text-navy hover:bg-pixelyellow/90">Salvar</Button>
           </div>
