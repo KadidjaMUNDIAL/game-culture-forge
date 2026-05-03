@@ -19,8 +19,8 @@ export const AdminLayout = ({ children }: { children: ReactNode }) => {
   const isActive = (to: string) => (to === "/admin" ? pathname === "/admin" : pathname.startsWith(to));
 
   return (
-    <div className="min-h-screen flex bg-muted/40">
-      <aside className="w-64 bg-navy text-white flex flex-col p-4">
+    <div className="h-screen flex bg-muted/40 overflow-hidden">
+      <aside className="w-64 bg-navy text-white flex flex-col p-4 h-screen sticky top-0">
         <h2 className="font-display text-xl text-pixelyellow text-center uppercase">Área Restrita</h2>
         <div className="h-0.5 bg-pixelyellow/50 my-3" />
         <nav className="flex-1 flex flex-col gap-1">
@@ -51,7 +51,7 @@ export const AdminLayout = ({ children }: { children: ReactNode }) => {
         </nav>
       </aside>
 
-      <main className="flex-1 p-6 md:p-8 overflow-auto animate-fade-in">{children}</main>
+      <main className="flex-1 p-6 md:p-8 overflow-y-auto h-screen animate-fade-in">{children}</main>
     </div>
   );
 };

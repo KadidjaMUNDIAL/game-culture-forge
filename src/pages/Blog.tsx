@@ -7,6 +7,10 @@ import { RichRenderer } from "@/components/aluno/RichEditor";
 import { Comentarios } from "@/components/blog/Comentarios";
 import { Eye } from "lucide-react";
 
+const ADMIN_SENTINEL = "00000000-0000-0000-0000-000000000001";
+const authorName = (id: string, map: Record<string, string>) =>
+  id === ADMIN_SENTINEL ? "Kadidja" : (map[id] || "Aluno");
+
 type PublicPost = {
   id: string; titulo: string; resumo: string | null; conteudo: string;
   capa_url: string | null; tags: string[]; published_at: string | null;
@@ -49,7 +53,7 @@ const Blog = () => {
           {single.capa_url && <img src={single.capa_url} alt="" className="w-full h-64 object-cover rounded-lg my-4 border-2 border-pixelyellow/40" />}
           <h1 className="font-display text-3xl md:text-5xl uppercase text-navy">{single.titulo}</h1>
           <p className="text-sm text-muted-foreground mt-2 flex items-center gap-3">
-            <span>Por <strong>{authors[single.author_id] || "Aluno"}</strong></span>
+            <span>Por <strong>{authorName(single.author_id, authors)}</strong></span>
             <span>•</span>
             <span>{single.published_at ? format(new Date(single.published_at), "dd/MM/yyyy") : "—"}</span>
             <span>•</span>
@@ -83,7 +87,7 @@ const Blog = () => {
               <h3 className="font-display text-lg uppercase text-navy leading-tight">{p.titulo}</h3>
               {p.resumo && <p className="font-body text-sm text-muted-foreground flex-1 line-clamp-3">{p.resumo}</p>}
               <div className="flex items-center justify-between text-xs">
-                <span className="text-muted-foreground">{authors[p.author_id] || "Aluno"}</span>
+                <span className="text-muted-foreground">{authorName(p.author_id, authors)}</span>
                 <span className="text-muted-foreground flex items-center gap-1">
                   <Eye className="w-3 h-3" />{p.visualizacoes}
                 </span>

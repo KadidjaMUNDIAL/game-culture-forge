@@ -23,8 +23,8 @@ export const AlunoLayout = ({ children }: { children: ReactNode }) => {
     to === "/aluno" ? pathname === "/aluno" || pathname === "/aluno/perfil" : pathname.startsWith(to);
 
   return (
-    <div className="min-h-screen flex bg-[hsl(220_70%_6%)] text-white">
-      <aside className="w-60 shrink-0 bg-gradient-to-b from-[hsl(220_70%_8%)] to-[hsl(220_70%_4%)] border-r border-pixelyellow/20 flex flex-col p-4">
+    <div className="h-screen flex bg-[hsl(220_70%_6%)] text-white overflow-hidden">
+      <aside className="w-60 shrink-0 bg-gradient-to-b from-[hsl(220_70%_8%)] to-[hsl(220_70%_4%)] border-r border-pixelyellow/20 flex flex-col p-4 h-screen sticky top-0">
         <h2 className="font-display text-xl text-pixelyellow text-center uppercase">Área do Aluno</h2>
         <p className="text-center text-white/80 text-sm font-ui mt-1">
           Estudante: {profile?.nome ?? "Aluno"}
@@ -59,7 +59,7 @@ export const AlunoLayout = ({ children }: { children: ReactNode }) => {
         </nav>
       </aside>
 
-      <main className="flex-1 p-6 md:p-8 overflow-auto animate-fade-in">{children}</main>
+      <main className="flex-1 p-6 md:p-8 overflow-y-auto h-screen animate-fade-in">{children}</main>
     </div>
   );
 };
