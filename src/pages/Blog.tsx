@@ -7,6 +7,10 @@ import { RichRenderer } from "@/components/aluno/RichEditor";
 import { Comentarios } from "@/components/blog/Comentarios";
 import { Eye } from "lucide-react";
 
+const ADMIN_SENTINEL = "00000000-0000-0000-0000-000000000001";
+const authorName = (id: string, map: Record<string, string>) =>
+  id === ADMIN_SENTINEL ? "Kadidja" : (map[id] || "Aluno");
+
 type PublicPost = {
   id: string; titulo: string; resumo: string | null; conteudo: string;
   capa_url: string | null; tags: string[]; published_at: string | null;
