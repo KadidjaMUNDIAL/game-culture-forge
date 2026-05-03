@@ -112,12 +112,15 @@ export type Database = {
       materiais: {
         Row: {
           arquivo_path: string | null
+          arquivo_tipo: string | null
           arquivo_url: string | null
           capa_url: string | null
           created_at: string
           created_by: string
+          data_publicacao: string | null
           descricao: string | null
           id: string
+          integrantes: string[] | null
           ordem: number
           tipo: Database["public"]["Enums"]["material_tipo"]
           titulo: string
@@ -127,12 +130,15 @@ export type Database = {
         }
         Insert: {
           arquivo_path?: string | null
+          arquivo_tipo?: string | null
           arquivo_url?: string | null
           capa_url?: string | null
           created_at?: string
           created_by: string
+          data_publicacao?: string | null
           descricao?: string | null
           id?: string
+          integrantes?: string[] | null
           ordem?: number
           tipo: Database["public"]["Enums"]["material_tipo"]
           titulo: string
@@ -142,12 +148,15 @@ export type Database = {
         }
         Update: {
           arquivo_path?: string | null
+          arquivo_tipo?: string | null
           arquivo_url?: string | null
           capa_url?: string | null
           created_at?: string
           created_by?: string
+          data_publicacao?: string | null
           descricao?: string | null
           id?: string
+          integrantes?: string[] | null
           ordem?: number
           tipo?: Database["public"]["Enums"]["material_tipo"]
           titulo?: string
@@ -159,21 +168,24 @@ export type Database = {
       }
       post_comments: {
         Row: {
-          author_id: string
+          author_id: string | null
+          author_nome: string | null
           conteudo: string
           created_at: string
           id: string
           post_id: string
         }
         Insert: {
-          author_id: string
+          author_id?: string | null
+          author_nome?: string | null
           conteudo: string
           created_at?: string
           id?: string
           post_id: string
         }
         Update: {
-          author_id?: string
+          author_id?: string | null
+          author_nome?: string | null
           conteudo?: string
           created_at?: string
           id?: string
@@ -270,6 +282,57 @@ export type Database = {
           nome?: string
           updated_at?: string
           xp?: number
+        }
+        Relationships: []
+      }
+      site_pages: {
+        Row: {
+          blocos: Json
+          html_override: string | null
+          id: string
+          slug: string
+          titulo: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          blocos?: Json
+          html_override?: string | null
+          id?: string
+          slug: string
+          titulo?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          blocos?: Json
+          html_override?: string | null
+          id?: string
+          slug?: string
+          titulo?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      tags: {
+        Row: {
+          cor: string
+          created_at: string
+          id: string
+          nome: string
+        }
+        Insert: {
+          cor?: string
+          created_at?: string
+          id?: string
+          nome: string
+        }
+        Update: {
+          cor?: string
+          created_at?: string
+          id?: string
+          nome?: string
         }
         Relationships: []
       }
