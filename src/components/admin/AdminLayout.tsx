@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { ReactNode, useState } from "react";
+import { NavLink, useLocation, Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { Home, Users, Calendar, BookOpen, FolderKanban, MessageSquare, FileText, LogOut } from "lucide-react";
+import { Home, Users, Calendar, BookOpen, FolderKanban, MessageSquare, FileText, LogOut, Eye, ChevronDown, ChevronRight } from "lucide-react";
 
 const items = [
   { icon: Home, label: "INÍCIO", to: "/admin" },
@@ -11,6 +11,15 @@ const items = [
   { icon: FileText, label: "MATERIAIS EXTRAS", to: "/admin/materiais" },
   { icon: FolderKanban, label: "PROJETOS", to: "/admin/projetos" },
   { icon: MessageSquare, label: "BLOG", to: "/admin/blog" },
+];
+
+const publicPages = [
+  { label: "INÍCIO", to: "/?edit=1" },
+  { label: "A DISCIPLINA", to: "/disciplina?edit=1" },
+  { label: "BLOG", to: "/blog?edit=1" },
+  { label: "1º TRIMESTRE", to: "/trimestres/1?edit=1" },
+  { label: "2º TRIMESTRE", to: "/trimestres/2?edit=1" },
+  { label: "3º TRIMESTRE", to: "/trimestres/3?edit=1" },
 ];
 
 export const AdminLayout = ({ children }: { children: ReactNode }) => {
