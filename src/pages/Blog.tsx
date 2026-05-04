@@ -77,6 +77,7 @@ const Blog = () => {
 
   return (
     <PublicLayout>
+      <EditablePage slug="blog" titulo="Blog">
       <h2 className="font-display text-3xl md:text-5xl text-center uppercase text-navy mb-8">Blog</h2>
       {posts.length === 0 ? (
         <p className="text-center text-muted-foreground">Ainda não há posts publicados.</p>
