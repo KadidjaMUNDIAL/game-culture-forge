@@ -84,11 +84,16 @@ const AdminMateriaisPage = ({ tipoFixo }: { tipoFixo?: MaterialTipo }) => {
 
   const save = async () => {
     if (!adminPassword || !form.titulo.trim()) return toast.error("Título obrigatório");
+    const payload: any = {
+      ...form,
+      integrantes: form.integrantes.split(",").map(s => s.trim()).filter(Boolean),
+      data_publicacao: form.data_publicacao || null,
+    };
     try {
       if (editing) {
-        await adminAction(adminPassword, { type: "update_material", payload: { id: editing.id, ...form } });
+        await adminAction(adminPassword, { type: "update_material", payload: { id: editing.id, ...payload } });
       } else {
-        await adminAction(adminPassword, { type: "create_material", payload: form });
+        await adminAction(adminPassword, { type: "create_material", payload });
       }
       toast.success("Salvo!");
       setOpen(false);
