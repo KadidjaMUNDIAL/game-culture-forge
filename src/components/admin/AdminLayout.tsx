@@ -52,6 +52,29 @@ export const AdminLayout = ({ children }: { children: ReactNode }) => {
               </NavLink>
             );
           })}
+
+          <button
+            onClick={() => setShowPublic(s => !s)}
+            className="flex items-center gap-3 px-3 py-2 rounded-md font-ui text-sm text-white/80 hover:bg-white/10"
+          >
+            <Eye className="w-4 h-4" />
+            <span className="flex-1 text-left">EDITAR VISÃO PÚBLICA</span>
+            {showPublic ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
+          </button>
+          {showPublic && (
+            <div className="ml-2 border-l-2 border-pixelyellow/40 pl-2 flex flex-col gap-0.5 animate-fade-in">
+              {publicPages.map(p => (
+                <Link
+                  key={p.to}
+                  to={p.to}
+                  className="px-2 py-1.5 rounded text-xs text-white/70 hover:bg-white/10 hover:text-pixelyellow font-ui"
+                >
+                  {p.label}
+                </Link>
+              ))}
+            </div>
+          )}
+
           <button
             onClick={signOut}
             className="flex items-center gap-3 px-3 py-2 rounded-md font-ui text-sm text-white/80 hover:bg-pixelred/30 mt-auto"
@@ -60,6 +83,7 @@ export const AdminLayout = ({ children }: { children: ReactNode }) => {
           </button>
         </nav>
       </aside>
+
 
       <main className="flex-1 p-6 md:p-8 overflow-y-auto h-screen animate-fade-in">{children}</main>
     </div>
