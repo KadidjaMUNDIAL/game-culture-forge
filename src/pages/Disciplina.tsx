@@ -32,6 +32,7 @@ const Disciplina = () => {
 
   return (
     <PublicLayout>
+      <EditablePage slug="disciplina" titulo="A Disciplina">
       <h2 className="font-display text-3xl md:text-5xl text-center uppercase text-navy mb-8">A Disciplina</h2>
 
       <section className="mb-12">
