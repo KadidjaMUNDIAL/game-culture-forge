@@ -18,6 +18,7 @@ type Material = {
   id: string; titulo: string; descricao: string | null; tipo: MaterialTipo;
   trimestre: number | null; arquivo_url: string | null; arquivo_path: string | null;
   capa_url: string | null; visivel_publico: boolean; ordem: number; created_at: string;
+  integrantes: string[] | null; data_publicacao: string | null;
 };
 
 const TIPO_LABEL: Record<MaterialTipo, string> = {
