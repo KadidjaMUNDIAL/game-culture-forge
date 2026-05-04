@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Navigate, Link } from "react-router-dom";
 import { PublicLayout } from "@/components/site/PublicLayout";
+import { EditablePage } from "@/components/site/EditablePage";
 import { supabase } from "@/integrations/supabase/client";
 import { FileText, BookOpen, Users, Calendar } from "lucide-react";
 import { format } from "date-fns";
@@ -32,6 +33,7 @@ const Trimestre = () => {
 
   return (
     <PublicLayout>
+      <EditablePage slug={`trimestre-${num}`} titulo={`${num}º Trimestre`}>
       <h2 className="font-display text-3xl md:text-5xl text-center uppercase text-navy mb-10">
         {num}º Trimestre
       </h2>
@@ -105,6 +107,7 @@ const Trimestre = () => {
       <div className="mt-12 text-center">
         <Link to="/" className="font-ui text-sm text-navy underline">← Voltar ao início</Link>
       </div>
+      </EditablePage>
     </PublicLayout>
   );
 };

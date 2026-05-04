@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { PublicLayout } from "@/components/site/PublicLayout";
+import { EditablePage } from "@/components/site/EditablePage";
 import { ChevronDown, ChevronUp, CalendarDays } from "lucide-react";
 
 const trimestres = [
@@ -31,6 +32,7 @@ const Disciplina = () => {
 
   return (
     <PublicLayout>
+      <EditablePage slug="disciplina" titulo="A Disciplina">
       <h2 className="font-display text-3xl md:text-5xl text-center uppercase text-navy mb-8">A Disciplina</h2>
 
       <section className="mb-12">
@@ -87,6 +89,7 @@ const Disciplina = () => {
           ))}
         </div>
       </section>
+      </EditablePage>
     </PublicLayout>
   );
 };

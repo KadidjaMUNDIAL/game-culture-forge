@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import { RichRenderer } from "@/components/aluno/RichEditor";
 import { Comentarios } from "@/components/blog/Comentarios";
 import { Eye } from "lucide-react";
+import { EditablePage } from "@/components/site/EditablePage";
 
 const ADMIN_SENTINEL = "00000000-0000-0000-0000-000000000001";
 const authorName = (id: string, map: Record<string, string>) =>
@@ -76,6 +77,7 @@ const Blog = () => {
 
   return (
     <PublicLayout>
+      <EditablePage slug="blog" titulo="Blog">
       <h2 className="font-display text-3xl md:text-5xl text-center uppercase text-navy mb-8">Blog</h2>
       {posts.length === 0 ? (
         <p className="text-center text-muted-foreground">Ainda não há posts publicados.</p>
@@ -103,6 +105,7 @@ const Blog = () => {
           ))}
         </div>
       )}
+      </EditablePage>
     </PublicLayout>
   );
 };
