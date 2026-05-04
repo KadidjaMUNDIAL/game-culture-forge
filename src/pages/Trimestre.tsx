@@ -1,99 +1,110 @@
-import { useParams, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams, Navigate, Link } from "react-router-dom";
 import { PublicLayout } from "@/components/site/PublicLayout";
+import { supabase } from "@/integrations/supabase/client";
+import { FileText, BookOpen, Users, Calendar } from "lucide-react";
+import { format } from "date-fns";
 
-const dados: Record<string, { avaliacoes: { atividade: string; descricao: string; pontuacao: string }[]; cronograma: { mes: string; itens: { data: string; conteudos: string[]; atividades: string }[] }[] }> = {
-  "1": {
-    avaliacoes: [
-      { atividade: "Prova Trimestral", descricao: "Avaliação sobre conceitos iniciais de jogo e cultura.", pontuacao: "10,0" },
-      { atividade: "Trabalho em Grupo", descricao: "Análise de um jogo antigo e seu papel social.", pontuacao: "5,0" },
-    ],
-    cronograma: [
-      { mes: "Fevereiro", itens: [
-        { data: "10/02", conteudos: ["Apresentação da disciplina", "O que é jogo?"], atividades: "Leitura inicial." },
-        { data: "17/02", conteudos: ["Huizinga e o lúdico"], atividades: "Discussão em sala." },
-      ]},
-      { mes: "Março", itens: [
-        { data: "03/03", conteudos: ["Jogos na Antiguidade"], atividades: "Pesquisa em grupo." },
-      ]},
-    ],
-  },
-  "2": { avaliacoes: [], cronograma: [] },
-  "3": { avaliacoes: [], cronograma: [] },
+type Material = {
+  id: string; titulo: string; descricao: string | null;
+  tipo: "apostila" | "material_extra" | "projeto";
+  trimestre: number | null; arquivo_url: string | null; capa_url: string | null;
+  integrantes: string[] | null; data_publicacao: string | null;
 };
 
 const Trimestre = () => {
   const { num } = useParams();
+  const [materiais, setMateriais] = useState<Material[]>([]);
+
+  useEffect(() => {
+    if (!num) return;
+    supabase.from("materiais").select("*")
+      .eq("visivel_publico", true)
+      .eq("trimestre", Number(num))
+      .order("ordem")
+      .then(({ data }) => setMateriais((data as any) || []));
+  }, [num]);
+
   if (!num || !["1", "2", "3"].includes(num)) return <Navigate to="/" />;
-  const d = dados[num];
+
+  const apostilas = materiais.filter(m => m.tipo === "apostila");
+  const projetos = materiais.filter(m => m.tipo === "projeto");
 
   return (
     <PublicLayout>
-      <h2 className="font-display text-3xl md:text-5xl text-center uppercase text-navy mb-8">
+      <h2 className="font-display text-3xl md:text-5xl text-center uppercase text-navy mb-10">
         {num}º Trimestre
       </h2>
 
-      <section className="mb-12">
-        <h3 className="section-title mb-4">Avaliações</h3>
-        <div className="pixel-card overflow-x-auto">
-          {d.avaliacoes.length === 0 ? (
-            <p className="font-body text-muted-foreground">Nenhuma avaliação cadastrada ainda.</p>
-          ) : (
-            <table className="w-full text-sm font-body">
-              <thead>
-                <tr className="bg-navy text-white">
-                  <th className="text-left p-3">Atividade</th>
-                  <th className="text-left p-3">Descrição</th>
-                  <th className="text-right p-3 w-32">Pontuação</th>
-                </tr>
-              </thead>
-              <tbody>
-                {d.avaliacoes.map((a, i) => (
-                  <tr key={i} className="border-b border-border">
-                    <td className="p-3 font-ui font-semibold">{a.atividade}</td>
-                    <td className="p-3">{a.descricao}</td>
-                    <td className="p-3 text-right text-pixelred font-bold">{a.pontuacao}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
+      {/* Apostila */}
+      <section className="mb-16">
+        <h3 className="section-title mb-6 flex items-center gap-2">
+          <BookOpen className="w-6 h-6 text-pixelyellow" /> Apostila
+        </h3>
+        {apostilas.length === 0 ? (
+          <div className="pixel-card"><p className="font-body text-muted-foreground">Apostila ainda não publicada.</p></div>
+        ) : (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {apostilas.map(m => (
+              <a key={m.id} href={m.arquivo_url || "#"} target="_blank" rel="noopener"
+                className="pixel-card !p-4 flex flex-col gap-3 hover:-translate-y-1 transition-transform">
+                {m.capa_url ? (
+                  <img src={m.capa_url} className="w-full h-36 object-cover rounded" alt="" />
+                ) : (
+                  <div className="h-36 grid place-items-center bg-pixelyellow/10 rounded">
+                    <FileText className="w-12 h-12 text-navy/40" />
+                  </div>
+                )}
+                <h4 className="font-display text-lg uppercase text-navy leading-tight">{m.titulo}</h4>
+                {m.descricao && <p className="font-body text-sm text-muted-foreground line-clamp-3">{m.descricao}</p>}
+              </a>
+            ))}
+          </div>
+        )}
       </section>
 
+      {/* Projetos */}
       <section>
-        <h3 className="section-title mb-4">Cronograma</h3>
-        <div className="space-y-5">
-          {d.cronograma.length === 0 ? (
-            <div className="pixel-card"><p className="font-body text-muted-foreground">Cronograma a definir.</p></div>
-          ) : (
-            d.cronograma.map((m, i) => (
-              <div key={i} className="pixel-card !p-0 overflow-hidden">
-                <div className="bg-pixelyellow text-navy font-display text-xl uppercase px-5 py-2">{m.mes}</div>
-                <table className="w-full text-sm font-body">
-                  <thead>
-                    <tr className="bg-muted">
-                      <th className="text-left p-3 w-24">Data</th>
-                      <th className="text-left p-3">Conteúdos</th>
-                      <th className="text-left p-3">Atividades</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {m.itens.map((it, j) => (
-                      <tr key={j} className="border-b border-border">
-                        <td className="p-3 font-ui font-semibold text-navy">{it.data}</td>
-                        <td className="p-3">
-                          <ul className="space-y-1">{it.conteudos.map((c, k) => <li key={k}>{c}</li>)}</ul>
-                        </td>
-                        <td className="p-3 text-muted-foreground">{it.atividades}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ))
-          )}
-        </div>
+        <h3 className="section-title mb-10 flex items-center gap-2">
+          <FileText className="w-6 h-6 text-pixelyellow" /> Projetos
+        </h3>
+        {projetos.length === 0 ? (
+          <div className="pixel-card"><p className="font-body text-muted-foreground">Sem projetos publicados ainda.</p></div>
+        ) : (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {projetos.map(m => (
+              <a key={m.id} href={m.arquivo_url || "#"} target="_blank" rel="noopener"
+                className="pixel-card !p-4 flex flex-col gap-3 hover:-translate-y-1 transition-transform">
+                {m.capa_url ? (
+                  <img src={m.capa_url} className="w-full h-36 object-cover rounded" alt="" />
+                ) : (
+                  <div className="h-36 grid place-items-center bg-pixelyellow/10 rounded">
+                    <FileText className="w-12 h-12 text-navy/40" />
+                  </div>
+                )}
+                <h4 className="font-display text-lg uppercase text-navy leading-tight">{m.titulo}</h4>
+                {m.descricao && <p className="font-body text-sm text-muted-foreground line-clamp-3">{m.descricao}</p>}
+                {m.integrantes && m.integrantes.length > 0 && (
+                  <p className="text-xs flex items-start gap-1 text-navy/80">
+                    <Users className="w-3 h-3 mt-0.5 shrink-0" />
+                    <span>{m.integrantes.join(", ")}</span>
+                  </p>
+                )}
+                {m.data_publicacao && (
+                  <p className="text-xs flex items-center gap-1 text-muted-foreground">
+                    <Calendar className="w-3 h-3" />
+                    {format(new Date(m.data_publicacao), "dd/MM/yyyy")}
+                  </p>
+                )}
+              </a>
+            ))}
+          </div>
+        )}
       </section>
+
+      <div className="mt-12 text-center">
+        <Link to="/" className="font-ui text-sm text-navy underline">← Voltar ao início</Link>
+      </div>
     </PublicLayout>
   );
 };
