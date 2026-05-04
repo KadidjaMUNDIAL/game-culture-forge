@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import { RichRenderer } from "@/components/aluno/RichEditor";
 import { Comentarios } from "@/components/blog/Comentarios";
 import { Eye } from "lucide-react";
+import { EditablePage } from "@/components/site/EditablePage";
 
 const ADMIN_SENTINEL = "00000000-0000-0000-0000-000000000001";
 const authorName = (id: string, map: Record<string, string>) =>
