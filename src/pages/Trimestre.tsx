@@ -33,6 +33,7 @@ const Trimestre = () => {
 
   return (
     <PublicLayout>
+      <EditablePage slug={`trimestre-${num}`} titulo={`${num}º Trimestre`}>
       <h2 className="font-display text-3xl md:text-5xl text-center uppercase text-navy mb-10">
         {num}º Trimestre
       </h2>
