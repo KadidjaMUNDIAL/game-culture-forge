@@ -34,6 +34,7 @@ const AdminMateriaisPage = ({ tipoFixo }: { tipoFixo?: MaterialTipo }) => {
     titulo: "", descricao: "", tipo: (tipoFixo || "apostila") as MaterialTipo,
     trimestre: 1 as number | null, arquivo_url: "", arquivo_path: "", capa_url: "",
     visivel_publico: false, ordem: 0,
+    integrantes: "" as string, data_publicacao: "" as string,
   });
 
   const load = async () => {
