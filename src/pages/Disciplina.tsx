@@ -89,6 +89,7 @@ const Disciplina = () => {
           ))}
         </div>
       </section>
+      </EditablePage>
     </PublicLayout>
   );
 };
