@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { PublicLayout } from "@/components/site/PublicLayout";
+import { EditablePage } from "@/components/site/EditablePage";
 import { ChevronDown, ChevronUp, CalendarDays } from "lucide-react";
 
 const trimestres = [
