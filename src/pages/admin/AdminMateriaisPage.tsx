@@ -200,6 +200,18 @@ const AdminMateriaisPage = ({ tipoFixo }: { tipoFixo?: MaterialTipo }) => {
               {form.arquivo_url && <a href={form.arquivo_url} target="_blank" className="text-xs underline text-blue-600">Ver arquivo atual</a>}
             </div>
             <ImageUpload bucket="materiais" pathPrefix={`capas/${form.tipo}`} value={form.capa_url} onChange={v => setForm({ ...form, capa_url: v })} label="Capa (opcional)" />
+            {form.tipo === "projeto" && (
+              <>
+                <div>
+                  <label className="text-sm font-semibold">Integrantes (separados por vírgula)</label>
+                  <Input value={form.integrantes} onChange={e => setForm({ ...form, integrantes: e.target.value })} placeholder="Ana, Bruno, Carla" />
+                </div>
+                <div>
+                  <label className="text-sm font-semibold">Data de publicação</label>
+                  <Input type="date" value={form.data_publicacao} onChange={e => setForm({ ...form, data_publicacao: e.target.value })} />
+                </div>
+              </>
+            )}
             <div className="flex items-center gap-2">
               <input type="checkbox" id="vis" checked={form.visivel_publico} onChange={e => setForm({ ...form, visivel_publico: e.target.checked })} />
               <label htmlFor="vis" className="text-sm">Visível na página pública</label>
