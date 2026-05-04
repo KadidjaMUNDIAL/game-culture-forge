@@ -50,7 +50,7 @@ const AdminMateriaisPage = ({ tipoFixo }: { tipoFixo?: MaterialTipo }) => {
 
   const openNew = () => {
     setEditing(null);
-    setForm({ titulo: "", descricao: "", tipo: tipoFixo || "apostila", trimestre: 1, arquivo_url: "", arquivo_path: "", capa_url: "", visivel_publico: false, ordem: 0 });
+    setForm({ titulo: "", descricao: "", tipo: tipoFixo || "apostila", trimestre: 1, arquivo_url: "", arquivo_path: "", capa_url: "", visivel_publico: false, ordem: 0, integrantes: "", data_publicacao: "" });
     setOpen(true);
   };
   const openEdit = (m: Material) => {
@@ -59,6 +59,8 @@ const AdminMateriaisPage = ({ tipoFixo }: { tipoFixo?: MaterialTipo }) => {
       titulo: m.titulo, descricao: m.descricao || "", tipo: m.tipo,
       trimestre: m.trimestre, arquivo_url: m.arquivo_url || "", arquivo_path: m.arquivo_path || "",
       capa_url: m.capa_url || "", visivel_publico: m.visivel_publico, ordem: m.ordem,
+      integrantes: (m.integrantes || []).join(", "),
+      data_publicacao: m.data_publicacao || "",
     });
     setOpen(true);
   };
