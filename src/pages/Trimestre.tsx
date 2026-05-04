@@ -107,6 +107,7 @@ const Trimestre = () => {
       <div className="mt-12 text-center">
         <Link to="/" className="font-ui text-sm text-navy underline">← Voltar ao início</Link>
       </div>
+      </EditablePage>
     </PublicLayout>
   );
 };
