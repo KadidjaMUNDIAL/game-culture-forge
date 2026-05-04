@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Navigate, Link } from "react-router-dom";
 import { PublicLayout } from "@/components/site/PublicLayout";
+import { EditablePage } from "@/components/site/EditablePage";
 import { supabase } from "@/integrations/supabase/client";
 import { FileText, BookOpen, Users, Calendar } from "lucide-react";
 import { format } from "date-fns";
