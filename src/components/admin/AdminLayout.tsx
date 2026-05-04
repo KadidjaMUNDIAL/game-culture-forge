@@ -25,6 +25,7 @@ const publicPages = [
 export const AdminLayout = ({ children }: { children: ReactNode }) => {
   const { signOut } = useAuth();
   const { pathname } = useLocation();
+  const [showPublic, setShowPublic] = useState(false);
   const isActive = (to: string) => (to === "/admin" ? pathname === "/admin" : pathname.startsWith(to));
 
   return (
