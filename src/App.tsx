@@ -16,6 +16,7 @@ import Apostila from "./pages/aluno/Apostila";
 import MateriaisExtras from "./pages/aluno/MateriaisExtras";
 import BlogAluno from "./pages/aluno/BlogAluno";
 import Ranking from "./pages/aluno/Ranking";
+import Conquistas from "./pages/aluno/Conquistas";
 import AlunoGuard from "./pages/aluno/AlunoGuard";
 import AdminArea from "./pages/AdminArea";
 import AdminGuard from "./pages/admin/AdminGuard";
@@ -23,6 +24,8 @@ import AdminAgendaPage from "./pages/admin/AdminAgendaPage";
 import AdminBlogPage from "./pages/admin/AdminBlogPage";
 import AdminAlunosPage from "./pages/admin/AdminAlunosPage";
 import AdminMateriaisPage from "./pages/admin/AdminMateriaisPage";
+import AdminCommentsPage from "./pages/admin/AdminCommentsPage";
+import AdminTagsPage from "./pages/admin/AdminTagsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -49,6 +52,7 @@ const App = () => (
               <Route path="/aluno/materiais" element={<MateriaisExtras />} />
               <Route path="/aluno/blog" element={<BlogAluno />} />
               <Route path="/aluno/ranking" element={<Ranking />} />
+              <Route path="/aluno/conquistas" element={<Conquistas />} />
             </Route>
             <Route path="/admin" element={<AdminArea />} />
             <Route element={<AdminGuard />}>
@@ -58,6 +62,8 @@ const App = () => (
               <Route path="/admin/materiais" element={<AdminMateriaisPage tipoFixo="material_extra" />} />
               <Route path="/admin/projetos" element={<AdminMateriaisPage tipoFixo="projeto" />} />
               <Route path="/admin/blog" element={<AdminBlogPage />} />
+              <Route path="/admin/comentarios" element={<AdminCommentsPage />} />
+              <Route path="/admin/tags" element={<AdminTagsPage />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

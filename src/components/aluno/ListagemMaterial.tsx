@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { AlunoLayout } from "@/components/aluno/AlunoLayout";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 import { FileText, Eye } from "lucide-react";
 import { PdfViewer } from "@/components/aluno/PdfViewer";
 
@@ -12,8 +13,14 @@ type Material = {
 const isPdf = (url: string | null) => !!url && /\.pdf(\?|$)/i.test(url);
 
 const ListagemMaterial = ({ tipo, titulo, descricao }: { tipo: "apostila" | "material_extra" | "projeto"; titulo: string; descricao: string }) => {
+  const { user } = useAuth();
   const [items, setItems] = useState<Material[]>([]);
   const [viewing, setViewing] = useState<Material | null>(null);
+
+  const trackView = (m: Material) => {
+    if (!user) return;
+    supabase.from("material_views").insert({ user_id: user.id, material_id: m.id }).then(() => {});
+  };
 
   useEffect(() => {
     supabase.from("materiais").select("*").eq("tipo", tipo).order("trimestre").order("ordem").then(({ data }) => {
@@ -26,6 +33,7 @@ const ListagemMaterial = ({ tipo, titulo, descricao }: { tipo: "apostila" | "mat
   const Card = ({ m }: { m: Material }) => {
     const pdf = isPdf(m.arquivo_url);
     const handleClick = (e: React.MouseEvent) => {
+      trackView(m);
       if (pdf) { e.preventDefault(); setViewing(m); }
     };
     return (
