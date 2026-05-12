@@ -1,7 +1,8 @@
 import { ReactNode, useState } from "react";
 import { NavLink, useLocation, Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { Home, Users, Calendar, BookOpen, FolderKanban, MessageSquare, FileText, LogOut, Eye, ChevronDown, ChevronRight } from "lucide-react";
+import { Home, Users, Calendar, BookOpen, FolderKanban, MessageSquare, FileText, LogOut, Eye, ChevronDown, ChevronRight, Tag, MessagesSquare } from "lucide-react";
+import { useAdminRealtime } from "@/hooks/useAdminRealtime";
 
 const items = [
   { icon: Home, label: "INÍCIO", to: "/admin" },
@@ -11,6 +12,8 @@ const items = [
   { icon: FileText, label: "MATERIAIS EXTRAS", to: "/admin/materiais" },
   { icon: FolderKanban, label: "PROJETOS", to: "/admin/projetos" },
   { icon: MessageSquare, label: "BLOG", to: "/admin/blog" },
+  { icon: MessagesSquare, label: "COMENTÁRIOS", to: "/admin/comentarios" },
+  { icon: Tag, label: "TAGS", to: "/admin/tags" },
 ];
 
 const publicPages = [
@@ -26,6 +29,7 @@ export const AdminLayout = ({ children }: { children: ReactNode }) => {
   const { signOut } = useAuth();
   const { pathname } = useLocation();
   const [showPublic, setShowPublic] = useState(false);
+  useAdminRealtime();
   const isActive = (to: string) => (to === "/admin" ? pathname === "/admin" : pathname.startsWith(to));
 
   return (

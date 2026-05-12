@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { Home, User, Calendar, BookOpen, FileText, MessageSquare, LogOut, Trophy } from "lucide-react";
+import { Home, User, Calendar, BookOpen, FileText, MessageSquare, LogOut, Trophy, Award } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRealtimeNotifier } from "@/hooks/useRealtimeNotifier";
 
@@ -11,6 +11,7 @@ const items = [
   { icon: BookOpen, label: "APOSTILA", to: "/aluno/apostila" },
   { icon: FileText, label: "MATERIAIS EXTRAS", to: "/aluno/materiais" },
   { icon: MessageSquare, label: "BLOG", to: "/aluno/blog" },
+  { icon: Award, label: "CONQUISTAS", to: "/aluno/conquistas" },
   { icon: Trophy, label: "RANKING", to: "/aluno/ranking" },
 ];
 
